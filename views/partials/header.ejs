@@ -1,0 +1,103 @@
+<header>
+    <div class="container header-content">
+        <a href="/dashboard" class="logo">
+            <i class="fas fa-fire"></i> CODE WARRIOR
+        </a>
+        
+        <nav class="nav-links">
+            <a href="/dashboard" class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="/progress" class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'progress' ? 'active' : '' %>">
+                <i class="fas fa-chart-line"></i> Progresso
+            </a>
+            <a href="/routine" class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'routine' ? 'active' : '' %>">
+                <i class="fas fa-calendar-alt"></i> Rotina
+            </a>
+            <a href="/milestones" class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'milestones' ? 'active' : '' %>">
+                <i class="fas fa-trophy"></i> Metas
+            </a>
+        </nav>
+        
+        <% if (typeof user !== 'undefined' && user) { %>
+            <div class="user-profile">
+                <div class="xp-badge">
+                    <i class="fas fa-bolt"></i> <%= typeof user.xp !== 'undefined' ? user.xp : 0 %> XP
+                </div>
+                <div class="avatar" onclick="toggleUserMenu()">
+                    <% if (typeof user.avatar !== 'undefined' && user.avatar) { %>
+                        <img src="<%= user.avatar %>" alt="<%= typeof user.username !== 'undefined' ? user.username : 'Usuário' %>">
+                    <% } else { %>
+                        <i class="fas fa-user"></i>
+                    <% } %>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <% if (typeof user.avatar !== 'undefined' && user.avatar) { %>
+                                <img src="<%= user.avatar %>" alt="<%= typeof user.username !== 'undefined' ? user.username : 'Usuário' %>">
+                            <% } else { %>
+                                <i class="fas fa-user"></i>
+                            <% } %>
+                        </div>
+                        <div class="user-details">
+                            <strong><%= typeof user.username !== 'undefined' ? user.username : 'Usuário' %></strong>
+                            <span>Nível <%= typeof user.level !== 'undefined' ? user.level : 1 %></span>
+                        </div>
+                    </div>
+                    <a href="/profile" class="menu-item">
+                        <i class="fas fa-user-cog"></i> Perfil
+                    </a>
+                    <a href="/settings" class="menu-item">
+                        <i class="fas fa-cog"></i> Configurações
+                    </a>
+                    <a href="/logout" class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </a>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="auth-buttons">
+                <a href="/login" class="btn btn-outline">Login</a>
+                <a href="/register" class="btn btn-primary">Registrar</a>
+            </div>
+        <% } %>
+    </div>
+</header>
+
+<% if (typeof user !== 'undefined' && user) { %>
+    <div class="subheader">
+        <div class="container">
+            <div class="subheader-content">
+                <div class="level-progress">
+                    <div class="level">Nível <%= typeof user.level !== 'undefined' ? user.level : 1 %></div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: <%= typeof user.levelProgress !== 'undefined' ? user.levelProgress : 0 %>%;"></div>
+                    </div>
+                    <div class="xp"><%= typeof user.xp !== 'undefined' ? user.xp : 0 %>/<%= typeof user.nextLevelXp !== 'undefined' ? user.nextLevelXp : 1000 %> XP</div>
+                </div>
+                <div class="streak">
+                    <i class="fas fa-calendar-day"></i>
+                    <%= typeof user.streak !== 'undefined' ? user.streak : 0 %> dias consecutivos
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<script>
+    function toggleUserMenu() {
+        const menu = document.getElementById('userMenu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Fechar menu quando clicar fora
+    document.addEventListener('click', function(event) {
+        const userMenu = document.getElementById('userMenu');
+        const avatar = document.querySelector('.avatar');
+        
+        if (userMenu && !avatar.contains(event.target) {
+            userMenu.style.display = 'none';
+        }
+    });
+</script>
